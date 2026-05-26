@@ -31,27 +31,26 @@
 - OpenWeatherMap API
 - Responsive Web Design
 ## Design Highlights
-Professional blue-and-white visual theme
-Dynamic weather animations
-Modern glass-effect interface
-Minimal and elegant typography
-Interactive forecast cards
+- Professional blue-and-white visual theme
+- Dynamic weather animations
+- Modern glass-effect interface
+- Minimal and elegant typography
+- Interactive forecast cards
 ## Application Workflow
-User searches for a city or enables location access
-Weather data is fetched in real time
-Current weather and forecast information are displayed
-Background themes automatically adapt to weather conditions
-Forecast cards and weather metrics update dynamically
+- User searches for a city or enables location access
+- Weather data is fetched in real time
+- Current weather and forecast information are displayed
+- Background themes automatically adapt to weather conditions
+- Forecast cards and weather metrics update dynamically
 ## Task Objectives
-Develop a responsive real-time weather application
-Integrate external APIs for live weather data
-Implement dynamic UI rendering based on atmospheric conditions
-Enhance user interaction through modern frontend design principles
+- Develop a responsive real-time weather application
+- Integrate external APIs for live weather data
+- Implement dynamic UI rendering based on atmospheric conditions
+- Enhance user interaction through modern frontend design principles
 ## Author
 
-Gandla Vyshnavi
+** Gandla Vyshnavi **
 Computer Science and Engineering 
 Mtech Student
 
-
-Live Application:
+## Live Application:
