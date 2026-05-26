@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Skyline Weather — Premium real-time weather forecasts with live temperature, humidity, wind speed, AQI, and extended forecast." />
+  <title>Skyline Weather</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app-bg" id="appBg">
+
+  <!-- Mesh gradient layers -->
+  <div class="mesh-layer mesh-1"></div>
+  <div class="mesh-layer mesh-2"></div>
+  <div class="mesh-layer mesh-3"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="container">
+
+    <!-- ===== TOP NAV ===== -->
+    <nav class="topnav">
+      <div class="brand">
+        <div class="brand-icon">🌤</div>
+        <div>
+          <h1 class="logo">Sky<em>line</em></h1>
+          <span class="logo-sub">Weather Intelligence</span>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <div class="unit-toggle">
+          <button id="celsiusBtn" class="unit-btn active">°C</button>
+          <button id="fahrenheitBtn" class="unit-btn">°F</button>
+        </div>
+        <div class="live-badge">
+          <span class="pulse-dot"></span> LIVE
+        </div>
+        <div class="time-block">
+          <div class="time-val" id="currentTime">--:--</div>
+          <div class="time-date" id="currentDate"></div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===== SEARCH ===== -->
+    <div class="search-wrap">
+      <div class="search-inner">
+        <span class="search-icon-prefix">🔍</span>
+        <input type="text" id="cityInput" class="search-input"
+          placeholder="Search any city — e.g. Hyderabad, Paris, New York..."
+          autocomplete="off" spellcheck="false" />
+        <button id="searchBtn" class="btn-search">Search</button>
+        <button id="locationBtn" class="btn-locate" title="Use my location">📍 My Location</button>
+      </div>
+
+      <div class="quick-cities">
+        <span class="ql">Quick:</span>
+        <span class="chip" data-city="Hyderabad">Hyderabad</span>
+        <span class="chip" data-city="Delhi">Delhi</span>
+        <span class="chip" data-city="Mumbai">Mumbai</span>
+        <span class="chip" data-city="Bangalore">Bangalore</span>
+        <span class="chip" data-city="Chennai">Chennai</span>
+        <span class="chip" data-city="London">London</span>
+        <span class="chip" data-city="Tokyo">Tokyo</span>
+        <span class="chip" data-city="New York">New York</span>
+      </div>
+    </div>
+
+    <!-- ===== LOADING ===== -->
+    <div class="loading hidden" id="loading">
+      <div class="loader-ring"></div>
+      <p>Fetching weather data...</p>
+    </div>
+
+    <!-- ===== ERROR ===== -->
+    <div class="error-box hidden" id="error"></div>
+
+    <!-- ===== WEATHER CONTENT ===== -->
+    <div id="weatherContent" class="hidden">
+
+      <!-- HERO WEATHER CARD -->
+      <div class="hero-card glass">
+        <div class="hero-left">
+          <div class="location-info">
+            <div class="city-pill">
+              <span class="pin-icon">📍</span>
+              <span id="cityName">--</span>
+              <span class="country-badge" id="country">--</span>
+            </div>
+            <div class="coord-text" id="coordText"></div>
+          </div>
+
+          <div class="temp-block">
+            <div class="temp-giant">
+              <span id="temp">--</span><sup>°</sup>
+            </div>
+            <div class="temp-meta">
+              <div class="desc-text" id="description">--</div>
+              <div class="feels-row">Feels like <strong id="feelsLike">--</strong>°</div>
+              <div class="hi-lo-row">
+                <span class="hi">H: <strong id="tempMax">--</strong>°</span>
+                <span class="divider">|</span>
+                <span class="lo">L: <strong id="tempMin">--</strong>°</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="last-updated" id="lastUpdated"></div>
+        </div>
+
+        <div class="hero-right">
+          <div class="weather-icon-big" id="weatherIcon">☀️</div>
+          <div class="condition-tag" id="conditionTag">Clear Sky</div>
+          <div class="sun-times">
+            <div class="sun-item">🌅 <span id="sunrise">--</span></div>
+            <div class="sun-item">🌇 <span id="sunset">--</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATS ROW -->
+      <div class="stats-row">
+        <div class="stat-tile glass">
+          <div class="stat-icon">💧</div>
+          <div class="stat-body">
+            <div class="stat-label">Humidity</div>
+            <div class="stat-value" id="humidity">--</div>
+          </div>
+          <div class="stat-bar-wrap">
+            <div class="stat-bar" id="humidityBar"></div>
+          </div>
+        </div>
+
+        <div class="stat-tile glass">
+          <div class="stat-icon">💨</div>
+          <div class="stat-body">
+            <div class="stat-label">Wind Speed</div>
+            <div class="stat-value" id="wind">--</div>
+          </div>
+          <div class="stat-sub" id="windDir">--</div>
+        </div>
+
+        <div class="stat-tile glass">
+          <div class="stat-icon">👁️</div>
+          <div class="stat-body">
+            <div class="stat-label">Visibility</div>
+            <div class="stat-value" id="visibility">--</div>
+          </div>
+          <div class="stat-sub" id="visLabel">--</div>
+        </div>
+
+        <div class="stat-tile glass">
+          <div class="stat-icon">🌡️</div>
+          <div class="stat-body">
+            <div class="stat-label">Pressure</div>
+            <div class="stat-value" id="pressure">--</div>
+          </div>
+          <div class="stat-sub">hPa</div>
+        </div>
+
+        <div class="stat-tile glass">
+          <div class="stat-icon">☁️</div>
+          <div class="stat-body">
+            <div class="stat-label">Cloud Cover</div>
+            <div class="stat-value" id="clouds">--</div>
+          </div>
+          <div class="stat-sub" id="cloudDesc">--</div>
+        </div>
+
+        <div class="stat-tile glass">
+          <div class="stat-icon">🌊</div>
+          <div class="stat-body">
+            <div class="stat-label">Sea Level</div>
+            <div class="stat-value" id="seaLevel">--</div>
+          </div>
+          <div class="stat-sub">hPa</div>
+        </div>
+      </div>
+
+      <!-- TWO COLUMN: FORECAST + HOURLY -->
+      <div class="twin-col">
+
+        <!-- 5-DAY FORECAST -->
+        <div class="glass forecast-panel">
+          <div class="panel-header">
+            <span class="panel-title">5-Day Forecast</span>
+            <span class="panel-badge">Daily</span>
+          </div>
+          <div id="forecastContainer" class="forecast-list"></div>
+        </div>
+
+        <!-- HOURLY FORECAST -->
+        <div class="glass hourly-panel">
+          <div class="panel-header">
+            <span class="panel-title">Hourly Forecast</span>
+            <span class="panel-badge">24h</span>
+          </div>
+          <div id="hourlyContainer" class="hourly-scroll"></div>
+        </div>
+
+      </div>
+
+      <!-- WEATHER INSIGHTS STRIP -->
+      <div class="glass insights-strip">
+        <div class="insight-item">
+          <div class="insight-icon">🌬️</div>
+          <div class="insight-content">
+            <div class="insight-label">Wind Gust</div>
+            <div class="insight-val" id="gust">--</div>
+          </div>
+        </div>
+        <div class="insight-sep"></div>
+        <div class="insight-item">
+          <div class="insight-icon">🌡️</div>
+          <div class="insight-content">
+            <div class="insight-label">Dew Point</div>
+            <div class="insight-val" id="dewPoint">--</div>
+          </div>
+        </div>
+        <div class="insight-sep"></div>
+        <div class="insight-item">
+          <div class="insight-icon">⚡</div>
+          <div class="insight-content">
+            <div class="insight-label">UV Index</div>
+            <div class="insight-val" id="uv">Low</div>
+          </div>
+        </div>
+        <div class="insight-sep"></div>
+        <div class="insight-item">
+          <div class="insight-icon">🌫️</div>
+          <div class="insight-content">
+            <div class="insight-label">Air Quality</div>
+            <div class="insight-val" id="aqi">Good</div>
+          </div>
+        </div>
+        <div class="insight-sep"></div>
+        <div class="insight-item">
+          <div class="insight-icon">🌧️</div>
+          <div class="insight-content">
+            <div class="insight-label">Rain Chance</div>
+            <div class="insight-val" id="rainChance">--</div>
+          </div>
+        </div>
+        <div class="insight-sep"></div>
+        <div class="insight-item">
+          <div class="insight-icon">💦</div>
+          <div class="insight-content">
+            <div class="insight-label">Precipitation</div>
+            <div class="insight-val" id="precip">--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEATHER NARRATIVE BANNER -->
+      <div class="glass narrative-banner" id="narrativeBanner">
+        <div class="narrative-icon">📋</div>
+        <p id="narrativeText">Weather conditions are being analyzed...</p>
+      </div>
+
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="emptyState">
+      <div class="empty-globe">🌍</div>
+      <h2>Discover Weather <em>Anywhere</em></h2>
+      <p>Search any city worldwide or use your location to get accurate, real-time atmospheric data.</p>
+      <div class="empty-features">
+        <div class="ef-item"><span>🌡️</span> Live Temperature</div>
+        <div class="ef-item"><span>📅</span> 5-Day Forecast</div>
+        <div class="ef-item"><span>⏰</span> Hourly Breakdown</div>
+        <div class="ef-item"><span>💨</span> Wind & Pressure</div>
+        <div class="ef-item"><span>🌅</span> Sunrise & Sunset</div>
+        <div class="ef-item"><span>💧</span> Humidity & Dew Point</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span>© 2025 Skyline Weather</span>
+    <span class="sep">·</span>
+    <span>Powered by OpenWeatherMap</span>
+    <span class="sep">·</span>
+    <span>Real-time atmospheric data</span>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
