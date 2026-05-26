@@ -48,9 +48,8 @@
 - Implement dynamic UI rendering based on atmospheric conditions
 - Enhance user interaction through modern frontend design principles
 ## Author
-
-** Gandla Vyshnavi **
-Computer Science and Engineering 
-Mtech Student
+*Gandla Vyshnavi*
+*Computer Science and Engineering* 
+*Mtech Student*
 
 ## Live Application:
